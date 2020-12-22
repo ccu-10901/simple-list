@@ -34,24 +34,16 @@ int list_add(List *list, int data) {
 }
 
 int list_del(List *list, int target) {
-    Node *prev = NULL;
-    Node *curr = list->head;
-
-    while (curr) {
-        if (curr->data == target) {
-            Node *next = curr->next;
-            if (prev) {
-                prev->next = next;
-            } else {
-                list->head = next;
-            }
-            free(curr);
-            curr = NULL;
+    Node **curr = &list->head;
+    Node *n;
+    while ((n = *curr)) {
+        if (n->data == target) {
+            Node *next = n->next;
+            *curr = next;
+            free(n);
             return 0;
         }
-
-        prev = curr;
-        curr = curr->next;
+        curr = &n->next;
     }
 
     return -1;
